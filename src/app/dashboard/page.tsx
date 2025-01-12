@@ -5,6 +5,7 @@ import { supabase } from "../../../supabase";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import Sales from "@/components/sales/page";
+import { useSwipeable } from "react-swipeable";
 
 // Styled Components
 const Container = styled.div`
@@ -54,22 +55,28 @@ const SalesSection = styled.div`
   overflow-y: auto; /* Make it scrollable */
 `;
 
+const AddSaleButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  box-shadow: 0px -10px 5px #101010;
+  z-index: 10;
+`;
 const AddSaleButton = styled.button`
   padding: 12px;
-  background-color: #0070f3;
+  background-color: #303030;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 1.2rem;
   cursor: pointer;
-  margin-top: 20px;
   flex-shrink: 0; /* Prevent shrinking */
   position: sticky;
   bottom: 0; /* Fix the button to the bottom of the screen */
-  width: 100%;
-  &:hover {
-    background-color: #005bb5;
-  }
+  width: 12%;
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
 `;
 
 interface Sale {
@@ -86,6 +93,20 @@ const Dashboard = () => {
   const [sales, setSales] = useState<Sale[]>([]); // Replacing 'any[]' with 'Sale[]'
   const [activeTab, setActiveTab] = useState<string>("not called");
   const router = useRouter();
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (activeTab === "not called") handleTabChange("called");
+      else if (activeTab === "called") handleTabChange("installed");
+      else if (activeTab === "installed") handleTabChange("annulled");
+    },
+    onSwipedRight: () => {
+      if (activeTab === "annulled") handleTabChange("installed");
+      else if (activeTab === "installed") handleTabChange("called");
+      else if (activeTab === "called") handleTabChange("not called");
+    },
+    trackMouse: true, // Enable swipe-like gestures using mouse
+  });
 
   // Function to update earnings based on the current sales
   const updateEarnings = (salesData: Sale[]) => {
@@ -169,7 +190,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Container>
+    <Container {...swipeHandlers}>
       <EarningsSection>
         <EarningsText>{earnings}:-</EarningsText>
       </EarningsSection>
@@ -209,7 +230,9 @@ const Dashboard = () => {
         />
       </SalesSection>
 
-      <AddSaleButton onClick={handleAddSale}>Add New Sale</AddSaleButton>
+      <AddSaleButtonContainer onClick={handleAddSale}>
+        <AddSaleButton onClick={handleAddSale}>+</AddSaleButton>
+      </AddSaleButtonContainer>
     </Container>
   );
 };
