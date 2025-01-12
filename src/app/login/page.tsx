@@ -80,7 +80,7 @@ const Link = styled.a`
   }
 `;
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -140,6 +140,4 @@ const Login = () => {
       </SignUpLink>
     </Container>
   );
-};
-
-export default Login;
+}

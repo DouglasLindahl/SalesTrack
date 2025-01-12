@@ -88,7 +88,7 @@ interface Sale {
   number: string;
 }
 
-const Dashboard = () => {
+export default function Dashboard() {
   const [earnings, setEarnings] = useState<number>(0);
   const [sales, setSales] = useState<Sale[]>([]); // Replacing 'any[]' with 'Sale[]'
   const [activeTab, setActiveTab] = useState<string>("not called");
@@ -235,6 +235,4 @@ const Dashboard = () => {
       </AddSaleButtonContainer>
     </Container>
   );
-};
-
-export default Dashboard;
+}
