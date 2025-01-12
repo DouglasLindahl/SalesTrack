@@ -1,10 +1,10 @@
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../supabase";
 
+// Import fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,8 +27,10 @@ export default function RootLayout({
     const checkUserSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
+        // If no session, redirect to login
         router.push("/login");
       } else {
+        // Session exists, set isSuccess to true
         setIsSuccess(true);
       }
     };
@@ -36,13 +38,22 @@ export default function RootLayout({
   }, [router]);
 
   if (!isSuccess) {
-    return <p>Loading...</p>; // You should return loading state here
+    return (
+      <html>
+        <body>
+          <p>Loading...</p>;
+        </body>
+      </html>
+    );
   }
 
+  // Only render the children after the session check passes
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+    <html>
+      <body>
+        <div className={`${geistSans.variable} ${geistMono.variable}`}>
+          {children}
+        </div>
       </body>
     </html>
   );
