@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { supabase } from "../../../supabase";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
-// Styled components
+// Styled components (same as before)
 const Container = styled.div`
   max-width: 400px;
   margin: 0 auto;
@@ -86,6 +86,17 @@ export default function Login() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const router = useRouter();
+
+  // Automatically check for an existing session
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        router.push("/dashboard"); // Redirect if a session exists
+      }
+    };
+    checkSession();
+  }, [router]);
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
