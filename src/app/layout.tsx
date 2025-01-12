@@ -20,7 +20,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [session, setSession] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
 
@@ -30,8 +29,6 @@ export default function RootLayout({
       if (session) {
         if ((await session).data.session == null) {
           router.push("/login");
-        } else {
-          setSession(true);
         }
       }
     };
