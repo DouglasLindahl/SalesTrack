@@ -1,0 +1,17 @@
+{
+  "theme_color": "#202020",
+  "background_color": "#202020",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "TimeFrame",
+  "description": "Event tracker",
+  "short_name": "TimeFrame",
+  "icons": [
+    {
+      "src": "/call.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
