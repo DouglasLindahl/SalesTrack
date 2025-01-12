@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../supabase";
+import "./globals.css";
 
 // Import fonts
 const geistSans = Geist({

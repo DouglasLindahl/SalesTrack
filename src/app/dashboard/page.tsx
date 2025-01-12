@@ -12,7 +12,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh; /* Full screen height */
-  max-width: 1000px;
   margin: 0 auto;
   background-color: #202020;
 `;
@@ -74,7 +73,7 @@ const AddSaleButton = styled.button`
   flex-shrink: 0; /* Prevent shrinking */
   position: sticky;
   bottom: 0; /* Fix the button to the bottom of the screen */
-  width: 12%;
+  width: 50px;
   aspect-ratio: 1 / 1;
   border-radius: 100%;
 `;
