@@ -40,6 +40,9 @@ export default function RootLayout({
   if (!isSuccess) {
     return (
       <html>
+        <head>
+          <link rel="manifest" href="/manifest.json" />
+        </head>
         <body>
           <p>Loading...</p>;
         </body>
@@ -50,6 +53,9 @@ export default function RootLayout({
   // Only render the children after the session check passes
   return (
     <html>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body>
         <div className={`${geistSans.variable} ${geistMono.variable}`}>
           {children}
