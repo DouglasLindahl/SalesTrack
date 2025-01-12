@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import styled from "styled-components";
 
 // Styled Components
@@ -45,9 +44,18 @@ const StateSquare = styled.div<{ color: string }>`
   background-color: ${(props) => props.color};
 `;
 
+interface Sale {
+  id: string;
+  name: string;
+  status: string;
+  install_date: string;
+  created_at: string;
+  number: string;
+}
+
 interface SalesProps {
   activeTab: string;
-  sales: any[];
+  sales: Sale[]; // Replace 'any[]' with 'Sale[]'
   handleStateSwitch: (saleId: string, newStatus: string) => void;
 }
 
@@ -61,9 +69,13 @@ const Sales = ({ activeTab, sales, handleStateSwitch }: SalesProps) => {
   };
 
   // Filter sales based on activeTab, always display "annulled" sales when activeTab is "annulled"
-  const filteredSales = sales.filter(
-    (sale) => activeTab === "all" || sale.status === activeTab
-  );
+  const filteredSales = sales
+    .filter((sale) => activeTab === "all" || sale.status === activeTab)
+    // Sort the sales by created_at in descending order
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
 
   return (
     <SalesList>

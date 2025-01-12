@@ -72,15 +72,23 @@ const AddSaleButton = styled.button`
   }
 `;
 
+interface Sale {
+  id: string;
+  name: string;
+  status: string;
+  install_date: string;
+  created_at: string;
+  number: string;
+}
+
 const Dashboard = () => {
   const [earnings, setEarnings] = useState<number>(0);
-  const [sales, setSales] = useState<any[]>([]);
+  const [sales, setSales] = useState<Sale[]>([]); // Replacing 'any[]' with 'Sale[]'
   const [activeTab, setActiveTab] = useState<string>("not called");
   const router = useRouter();
 
   // Function to update earnings based on the current sales
-  const updateEarnings = (salesData: any[]) => {
-    // Get the current date and calculate the current and next month
+  const updateEarnings = (salesData: Sale[]) => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth(); // 0 - January, 11 - December
     const nextMonth = (currentMonth + 1) % 12; // If current month is December (11), nextMonth will be January (0)
@@ -94,11 +102,9 @@ const Dashboard = () => {
       return sale.status !== "annulled" && installMonth !== nextMonth;
     });
 
-    // Calculate the earnings
     let totalEarnings = 0;
     const saleCount = validSales.length;
 
-    // Add earnings based on the number of valid sales
     if (saleCount >= 25) {
       totalEarnings = saleCount * 2500;
     } else if (saleCount >= 20) {
@@ -111,7 +117,6 @@ const Dashboard = () => {
       totalEarnings = saleCount * 1500;
     }
 
-    // Add the bonus if there are 10 or more sales
     if (saleCount >= 10) {
       totalEarnings += 10000;
     }
@@ -135,16 +140,15 @@ const Dashboard = () => {
     };
 
     fetchSalesData();
-  }, [activeTab]); // Re-fetch sales data when the activeTab changes
+  }, [activeTab]);
 
-  // Handle tab change
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
 
   // Update the sale status and the earnings when a sale's status changes
   const handleStateSwitch = async (saleId: string, newStatus: string) => {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("sales")
       .update({ status: newStatus }) // Update sale's status
       .eq("id", saleId); // Find the sale by ID
@@ -152,7 +156,6 @@ const Dashboard = () => {
     if (error) {
       console.error("Error updating sale status:", error);
     } else {
-      // Update the local sales state and earnings immediately
       const updatedSales = sales.map((sale) =>
         sale.id === saleId ? { ...sale, status: newStatus } : sale
       );
@@ -162,7 +165,7 @@ const Dashboard = () => {
   };
 
   const handleAddSale = () => {
-    router.push("/addSale"); // Redirect to the page where you can add new sales
+    router.push("/addSale");
   };
 
   return (
@@ -199,7 +202,6 @@ const Dashboard = () => {
       </Tabs>
 
       <SalesSection>
-        {/* Pass activeTab as a prop to the Sales component */}
         <Sales
           activeTab={activeTab}
           sales={sales}

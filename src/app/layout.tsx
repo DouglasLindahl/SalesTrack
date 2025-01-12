@@ -1,5 +1,4 @@
 "use client";
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useEffect, useState } from "react";
@@ -21,32 +20,30 @@ export default function ProtectedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [session, setSession] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
+
   useEffect(() => {
     const checkUserSession = async () => {
-      const session = supabase.auth.getSession();
-      if (session) {
-        if ((await session).data.session == null) {
-          router.push("/unauthenticated/login");
-        } else {
-          setSession(true);
-        }
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        router.push("/unauthenticated/login");
+      } else {
+        setIsSuccess(true);
       }
     };
-    setIsSuccess(true);
     checkUserSession();
   }, [router]);
+
   if (!isSuccess) {
-    <p>Loading...</p>;
-  } else {
-    return (
-      <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          {children}
-        </body>
-      </html>
-    );
+    return <p>Loading...</p>; // You should return loading state here
   }
+
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+      </body>
+    </html>
+  );
 }
