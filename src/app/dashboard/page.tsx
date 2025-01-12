@@ -36,7 +36,7 @@ const Tabs = styled.div`
   z-index: 10;
 `;
 
-const TabButton = styled.button<{ isactive: string }>`
+const TabButton = styled.button<{ isactive: boolean }>`
   flex: 1;
   padding: 10px 0;
   background-color: #202020;
@@ -197,25 +197,25 @@ export default function Dashboard() {
 
       <Tabs>
         <TabButton
-          isactive={(activeTab === "not called").toString()}
+          isactive={activeTab === "not called"}
           onClick={() => handleTabChange("not called")}
         >
           Not Called
         </TabButton>
         <TabButton
-          isactive={(activeTab === "called").toString()}
+          isactive={activeTab === "called"}
           onClick={() => handleTabChange("called")}
         >
           Called
         </TabButton>
         <TabButton
-          isactive={(activeTab === "installed").toString()}
+          isactive={activeTab === "installed"}
           onClick={() => handleTabChange("installed")}
         >
           Installed
         </TabButton>
         <TabButton
-          isactive={(activeTab === "annulled").toString()}
+          isactive={activeTab === "annulled"}
           onClick={() => handleTabChange("annulled")}
         >
           Annulled
