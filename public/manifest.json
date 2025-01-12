@@ -9,7 +9,7 @@
   "short_name": "Sales",
   "icons": [
     {
-      "src": "/file.png",
+      "src": "/circle.png",
       "sizes": "192x192",
       "type": "image/png"
     }
