@@ -27,7 +27,7 @@ export default function ProtectedLayout({
     const checkUserSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
-        router.push("/unauthenticated/login");
+        router.push("/login");
       } else {
         setIsSuccess(true);
       }
