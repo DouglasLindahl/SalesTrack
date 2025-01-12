@@ -20,20 +20,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [session, setSession] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const checkUserSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        // If no session, redirect to login
-        router.push("/login");
-      } else {
-        // Session exists, set isSuccess to true
-        setIsSuccess(true);
+      const session = supabase.auth.getSession();
+      if (session) {
+        if ((await session).data.session == null) {
+          router.push("/login");
+        } else {
+          setSession(true);
+        }
       }
     };
+    setIsSuccess(true);
     checkUserSession();
   }, [router]);
 
